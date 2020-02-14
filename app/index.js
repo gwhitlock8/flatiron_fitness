@@ -1,5 +1,5 @@
-const EXERCISE_URL = 'http://localhost:3000/exercises';
-const ROUTINE_URL = 'http://localhost:3000/routines';
+const EXERCISE_URL = 'https://polar-earth-08264.herokuapp.com/exercises';
+const ROUTINE_URL = 'https://polar-earth-08264.herokuapp.com/routines';
 
 //Landing Page DOM Elements
 const landingDiv = document.querySelector('div#landing');
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded',() => {
     submitRoutineForm();
     showAllRoutines();
     showExercises();
+    $('[data-toggle="tooltip"]').tooltip();
     
 })
 
@@ -81,19 +82,27 @@ function buildMuscleGroupList(uniqueMuscleGroups){
 
         let muscleGroupButton = document.createElement('button');
         muscleGroupButton.className = "btn btn-link";
-        muscleGroupButton.type = ('button');
+        muscleGroupButton.type ='button';
         muscleGroupButton.setAttribute('data-toggle','collapse');
         muscleGroupButton.setAttribute('data-target',`#collapse-${muscleGroup}`);
         muscleGroupButton.setAttribute('aria-expanded','false');
         muscleGroupButton.setAttribute('aria-controls',`collapse-${muscleGroup}`);
         muscleGroupButton.innerText = muscleGroup;
 
-        let muscleGroupSpanPrimary = document.createElement('span');
+        let muscleGroupSpanPrimary = document.createElement('button');
+        muscleGroupSpanPrimary.type = 'button';
         muscleGroupSpanPrimary.className = "badge badge-danger badge-pill";
+        muscleGroupSpanPrimary.setAttribute('data-toggle','tooltip');
+        muscleGroupSpanPrimary.setAttribute('data-placement','top');
+        muscleGroupSpanPrimary.setAttribute('title',`${primaryMuscleGroup[muscleGroup].length} exercises with ${muscleGroup} as primary muscle group`);
         muscleGroupSpanPrimary.innerText = primaryMuscleGroup[muscleGroup].length;
         
-        let muscleGroupSpanSecondary = document.createElement('span');
+        let muscleGroupSpanSecondary = document.createElement('button');
         muscleGroupSpanSecondary.className = "badge badge-secondary badge-pill";
+        muscleGroupSpanSecondary .type = 'button';
+        muscleGroupSpanSecondary.setAttribute('data-toggle','tooltip');
+        muscleGroupSpanSecondary.setAttribute('data-placement','top');
+        muscleGroupSpanSecondary.setAttribute('title',`${secondaryMuscleGroup[muscleGroup].length} exercises with ${muscleGroup} as secondary muscle group`);
         muscleGroupSpanSecondary.innerText = secondaryMuscleGroup[muscleGroup].length;
 
         muscleGroupDivItem.appendChild(muscleGroupInnerDiv);
