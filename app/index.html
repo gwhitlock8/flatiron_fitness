@@ -35,7 +35,7 @@
     </div>
     
     
-    <div id='muscles-exercises' class='container' hidden>
+    <div id='muscles-exercises' hidden>
         
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#"><i class="fas fa-dumbbell"></i></a>
@@ -52,7 +52,7 @@
       
       
       
-      <div class='row'>
+      <div class='row container'>
             <div class='col-4'>
                 <div class="accordion" id='muscle-groups'>
 
@@ -105,37 +105,37 @@
                   
                   <div class='radio'>
                     <label for='sunday'>
-                      <input type='radio' aria-label='sunday' name='day' id='sunday'>&nbsp;Sunday
+                      <input type='radio' aria-label='sunday' name='day' id='Sunday'>&nbsp;Sunday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='monday'>
-                      <input type='radio' aria-label='monday' name='day' id='monday'>&nbsp;Monday
+                      <input type='radio' aria-label='monday' name='day' id='Monday'>&nbsp;Monday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='tuesday'>
-                      <input type='radio' aria-label='tuesday' name='day' id='tuesday'>&nbsp;Tuesday
+                      <input type='radio' aria-label='tuesday' name='day' id='Tuesday'>&nbsp;Tuesday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='wednesday'>
-                      <input type='radio' aria-label='wednesday' name='day' id='wednesday'>&nbsp;Wednesday
+                      <input type='radio' aria-label='wednesday' name='day' id='Wednesday'>&nbsp;Wednesday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='thursday'>
-                      <input type='radio' aria-label='thursday' name='day' id='thursday'>&nbsp;Thursday
+                      <input type='radio' aria-label='thursday' name='day' id='Thursday'>&nbsp;Thursday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='friday'>
-                      <input type='radio' aria-label='friday' name='day' id='friday'>&nbsp;Friday
+                      <input type='radio' aria-label='friday' name='day' id='Friday'>&nbsp;Friday
                     </label>
                   </div>
                   <div class='radio'>
                     <label for='saturday'>
-                      <input type='radio' aria-label='saturday' name='day' id='saturday'>&nbsp;Saturday
+                      <input type='radio' aria-label='saturday' name='day' id='Saturday'>&nbsp;Saturday
                     </label>
                   </div>
                 </div>
@@ -153,7 +153,7 @@
     </div>
 
 
-    <div id='show-routines'class='container' hidden>
+    <div id='show-routines'hidden>
 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#"><i class="fas fa-dumbbell"></i></a>
@@ -162,16 +162,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="#">Exercises</a>
-            <a class="nav-item nav-link" id='show-routines' href="#">Routines <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="#" id='show-exercises'>Exercises</a>
+            <a class="nav-item nav-link active" id='show-routines' href="#">Routines <span class="sr-only">(current)</span></a>
           </div>
         </div>
       </nav>
 
-      <div class='row'>
-        <div class='card-columns' id='routine-cards'>
-          
+      <div class='row container'>
+        <div class='col-md-1'></div>
+        <div class='col-md-10'>
+          <div class='container-fluid'>
+            <div class='card-columns' id='routine-cards'>
+              
+            </div>
+          </div>
         </div>
+        <div class='col-md-1'></div>
       </div>
 
 
@@ -211,12 +217,8 @@
             <div class='modal-body'>
               <form id='routineEditModalForm'>
                 <div class='form-group'>
-                  <div class="input-group input-group-lg">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="routineEditModalTitle">Title</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="routineTitle" aria-describedby="routineEditModalTitle" id='routineEditModalTitle'>
-                  </div>
+                  <label for='title'><h4>Title:</h4></label>
+                  <input type="text" class="form-control form-control-lg" id='routineEditModalTitle'>
                 </div>
                 <div class='form-group'>
                   <label for='day'>Routine Day:</label>
@@ -231,9 +233,11 @@
                   </select>
                 </div>
               </form>
+              <h6>Exercises:</h6>
+              <ul class='list-group' id='routineEditModalExerciseList'></ul>
               <div class='modal-footer'>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form='routineEditModalForm'>Update</button>
+                <button type="submit" class="btn btn-primary" id='updateRoutineButton' form='routineEditModalForm'>Update</button>
               </div>
             </div>
           </div>

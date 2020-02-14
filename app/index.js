@@ -27,6 +27,7 @@ const newRoutineForm = document.querySelector('form#newRoutineForm');
 //Routines Display DOM Elements
 const routinesContainer = document.querySelector('div#show-routines');
 const routineCardsDiv = document.querySelector('div#routine-cards');
+const showExercisesLink = document.querySelector('a#show-exercises');
 
 //ExerciseRoutineModal DOM Elements
 const exerciseRoutineModalTitle = document.querySelector('h5#exerciseRoutineModalTitle');
@@ -37,6 +38,9 @@ const exerciseRoutineModalVideo = document.querySelector('iframe#exerciseRoutine
 const routineEditModalForm = document.querySelector('form#routineEditModalForm');
 const routineEditModalTitle = document.querySelector('input#routineEditModalTitle');
 const routineEditModalDay = document.querySelector('select#routineEditModalDay');
+const routineEditModalExerciseList = document.querySelector('ul#routineEditModalExerciseList');
+const updateRoutineButton = document.querySelector('button#updateRoutineButton');
+
 
 
 const primaryMuscleGroup = {};
@@ -47,7 +51,8 @@ document.addEventListener('DOMContentLoaded',() => {
     getStarted();
     submitRoutineForm();
     showAllRoutines();
-
+    showExercises();
+    
 })
 
 
@@ -150,7 +155,7 @@ function buildExerciseList(muscleGroup){
     exerciseInnerDiv.className = 'card-body';
 
     let innerExerciseUl = document.createElement('ul');
-    innerExerciseUl.className = 'list-group';
+    innerExerciseUl.className = 'list-group exercises';
     innerExerciseUl.id = muscleGroup;
 
     primaryMuscleGroup[muscleGroup].forEach(exercise => {
@@ -221,6 +226,7 @@ function getRoutines(){
     .then(resp => resp.json())
     .then(resp => {
         routineSelect.innerHTML = '';
+        routineCardsDiv.innerHTML = '';
         routineSelect.appendChild(createNewRoutineSelectOption);
         resp.data.forEach(routine => {
             buildRoutineDropdownList(routine);
@@ -330,7 +336,8 @@ function buildRoutineCard(routine){
     let routineCard = document.createElement('div');
     routineCard.className = 'card shadow p-2 m-2 bg-white rounded';
     routineCard.style = 'width: 18rem';
-    routineCard.id = routine.id;
+    routineCard.dataset.id = routine.id;
+    routineCard.id = `routine-${routine.id}`;
 
     let routineCardBody = document.createElement('div');
     routineCardBody.className = 'card-body';
@@ -341,18 +348,44 @@ function buildRoutineCard(routine){
     routineCardTitle.innerText = routine.attributes.name;
     routineCardBody.appendChild(routineCardTitle);
 
+
     let routineCardSubTitle = document.createElement('h6');
     routineCardSubTitle.className = 'card-subtitle mb-2 text-muted';
     routineCardSubTitle.innerText = routine.attributes.day;
     routineCardBody.appendChild(routineCardSubTitle);
 
-    let routineCardText = document.createElement('p');
-    routineCardText.className = 'card-text';
-    routineCardBody.appendChild(routineCardText);
+    let routineButtonGroup = document.createElement('div');
+    routineButtonGroup.className = 'btn-group';
+    routineButtonGroup.role = 'group';
+    routineCardBody.appendChild(routineButtonGroup);
+
+    let routineEditButton = document.createElement('button');
+    routineEditButton.type = 'button';
+    routineEditButton.className = 'btn btn-warning btn-sm';
+    routineEditButton.dataset.id = routine.id;
+    routineEditButton.innerText = 'Edit';
+    routineButtonGroup.appendChild(routineEditButton);
+    routineEditButton.addEventListener('click',(e) => {
+        getRoutine(e.target.dataset.id)
+    });
+
+    let routineDeleteButton = document.createElement('button');
+    routineDeleteButton.type = 'button';
+    routineDeleteButton.className = 'btn btn-danger btn-sm';
+    routineDeleteButton.dataset.id = routine.id;
+    routineDeleteButton.innerText = 'Delete';
+    routineButtonGroup.appendChild(routineDeleteButton);
+    routineDeleteButton.addEventListener('click',(e) => {
+        deleteRoutine(e.target.dataset.id);
+    })
+
 
     let routineExerciseList = document.createElement('div');
     routineExerciseList.className = 'list-group overflow-auto d-inline p-2';
 
+    let routineExerciseListHeader = document.createElement('h6');
+    routineExerciseListHeader.innerText = 'Exercises:';
+    routineCard.appendChild(routineExerciseListHeader);
 
     routine.attributes.exercises.forEach(exercise => {
         let linkToExerciseModal = document.createElement('a');
@@ -360,6 +393,7 @@ function buildRoutineCard(routine){
         linkToExerciseModal.className = 'list-group-item list-group-item-action';
         linkToExerciseModal.id = 'exercise-routine-info-item';
         linkToExerciseModal.dataset.id = exercise.id;
+        linkToExerciseModal.id = `exercise-${exercise.id}`;
         routineExerciseList.appendChild(linkToExerciseModal);
 
         let routineExerciseInfoDiv = document.createElement('div');
@@ -388,6 +422,14 @@ function buildRoutineCard(routine){
     routineCardsDiv.appendChild(routineCard);
 }
 
+function showExercises(){
+    showExercisesLink.addEventListener('click',()=>{
+
+        routinesContainer.setAttribute('hidden',true);
+        muscleGroupAndExerciseParentContainer.removeAttribute('hidden');
+    })
+}
+
 function buildExerciseRoutineModal(exercise){
 
     $('#exerciseRoutineModal').modal('show');
@@ -396,25 +438,124 @@ function buildExerciseRoutineModal(exercise){
     exerciseRoutineModalVideo.src = exercise.video_url;
 }
 
+function deleteRoutine(routineId){
+    fetch(ROUTINE_URL + `/${routineId}/delete`,{
+        method: 'DELETE',
+        headers: {
+            'Content-Type':'application/json',
+            'Accept':'application/json'
+        },
+        body: JSON.stringify({
+            id: routineId
+        })
+    })
+    .then(resp => resp.json())
+    .then(resp => {
+        console.log(resp);
+        alert('Routine has been deleted!');
+        let deletedRoutine = document.querySelector(`div#routine-${routineId}`);
+        deletedRoutine.remove();
+    })
+}
 
 function getRoutine(routineId){
     fetch(ROUTINE_URL + `/${routineId}`)
     .then(resp => resp.json())
     .then(resp => {
-        buildRoutineEditModal(resp.data.attributes)
+        console.log(resp);
+        buildRoutineEditModal(resp.data)
     })
 }
 
 function buildRoutineEditModal(routine){
+    routineEditModalExerciseList.innerHTML = '';
     $('#routineEditModal').modal('show');
 
-    routineEditModalTitle.value = routine.name;
+    routineEditModalTitle.value = routine.attributes.name;
     routineEditModalDay.childNodes.forEach(day => {
-        if(day.innerText === routine.day){
+        if(day.innerText === routine.attributes.day){
             day.selected = 'selected';
         }
     });
 
+    routine.attributes.exercises.forEach(exercise => {
+        let routineExerciseListItem = document.createElement('li');
+        routineExerciseListItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        routineExerciseListItem.innerText = exercise.name;
+        routineExerciseListItem.id = `exercise-${exercise.id}`;
+        routineEditModalExerciseList.appendChild(routineExerciseListItem);
+        
+        let deleteExerciseFromRoutineButton = document.createElement('button');
+        deleteExerciseFromRoutineButton.type = 'button';
+        deleteExerciseFromRoutineButton.className = 'badge badge-danger badge-pill';
+        deleteExerciseFromRoutineButton.dataset.id = exercise.id;
+        deleteExerciseFromRoutineButton.innerHTML = "<span>&times;</span>";
+        routineExerciseListItem.appendChild(deleteExerciseFromRoutineButton);
+
+        deleteExerciseFromRoutineButton.addEventListener('click',(e) => {
+            deleteExerciseFromRoutine(routine.id,exercise.id)
+        })
+
+    })
+
+    updateRoutine(routine.id);
+
+}
+
+function deleteExerciseFromRoutine(routineId,exerciseId){
+    fetch(ROUTINE_URL + `/${routineId}/delete_exercise`,{
+        method: 'DELETE',
+        headers: {
+            'Content-Type':'application/json',
+            'Accept':'application/json'
+        },
+        body: JSON.stringify({
+            routine_id: routineId,
+            exercise_id: exerciseId
+        })
+    })
+    .then(resp => resp.json())
+    .then(resp => {
+        let deletedExercise = document.querySelector(`li#exercise-${exerciseId}`);
+        deletedExercise.remove();
+        let linkToDeletedExercise = document.querySelector(`a#exercise-${exerciseId}`);
+        linkToDeletedExercise.remove();
+        
+        alert('Exercise has been deleted from routine');
+    })
+
+}
+
+function updateRoutine(routineId){
+    routineEditModalForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+
+        let routineName = e.target.routineEditModalTitle.value;
+        let routineDay = e.target.routineEditModalDay[e.target.routineEditModalDay.selectedIndex].innerText;
+
+        fetch(ROUTINE_URL + `/${routineId}/update`,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify({
+                id: routineId,
+                name: routineName,
+                day: routineDay
+            })
+
+        })
+        .then(resp => resp.json())
+        .then(resp => {
+            console.log(resp);
+
+            alert('Routine has been updated!');
+
+            $('#routineEditModal').modal('hide');
 
 
+        });
+    
+    })
 }
