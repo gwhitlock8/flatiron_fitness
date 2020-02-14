@@ -1,0 +1,3 @@
+[submodule "flatiron_fitness_frontend"]
+	path = flatiron_fitness_frontend
+	url = https://github.com/gwhitlock8/flatiron_fitness_frontend
