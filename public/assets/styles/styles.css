@@ -1,0 +1,88 @@
+#cf-vid { 
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -100;
+}
+
+.jumbotron {
+    background: rgba(192,192,192,0.2) ;
+}
+
+.jumbotron h1 {
+    color: white;
+    font-family: 'Anton', sans-serif;
+}
+
+.jumbotron p {
+    color: white;
+    font-family: 'Monterrat', sans-serif;
+    font-weight: bold;
+}
+
+.btn-circle.btn-sm { 
+    width: 30px; 
+    height: 30px; 
+    padding: 6px 0px; 
+    border-radius: 15px; 
+    font-size: 8px; 
+    text-align: center;
+}
+
+.navbar {
+    width: 100%;
+    margin-bottom: 20px;
+    overflow: visible;
+}
+
+body {
+    background-color: lightslategray;
+
+}
+
+p.exercise-desc {
+    height: 70px;
+    overflow: scroll;
+}
+
+h4.routine-title {
+    font-family: 'Anton',sans-serif;
+    color: rgb(78, 78, 82);
+}
+
+.card-columns {
+    column-gap: 0.75em;
+    float: none;
+    column-span: none;
+    column-count: 2;
+}
+
+.fas.fa-info-circle.btn {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
+.list-group-item.list-group-item-dark {
+    display: flex;
+}
+
+.list-group-item.list-group-item-danger {
+    display: flex;
+}
+
+.exercises {
+    overflow-y: scroll;
+    height: 400px;
+}
+
+.row.container {
+    display: flex;
+    justify-content: center;
+}
+
+#muscle-exercises {
+    display: flex;
+    justify-content: center;
+}
