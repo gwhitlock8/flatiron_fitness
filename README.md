@@ -43,7 +43,7 @@ rails db:migrate
 rails db:seed
 ```
 9. Run ```rails s``` to start the application
-10. Navigation to http://localhost:3000
+10. Navigate to http://localhost:3000
 
 
 
