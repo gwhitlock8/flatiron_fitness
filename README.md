@@ -1,23 +1,23 @@
-#Flatiron Fitness
-####Single page application built during module 3 of Flatiron's Software Engineering Immersive program. This application allows the user to build workout routines from a list of predefined exercises.
+# Flatiron Fitness
+#### Single page application built during module 3 of Flatiron's Software Engineering Immersive program. This application allows the user to build workout routines from a list of predefined exercises.
 
-###Video Demo
+### Video Demo
 [![Watch the video](https://img.youtube.com/vi/pPYZJk-RJic/maxresdefault.jpg)](https://youtu.be/pPYZJk-RJic)
 
-##Technologies:
+## Technologies:
 
-###FrontEnd:
+### FrontEnd:
 - Javascript
 - Bootstrap (https://getbootstrap.com/)
 
-###Backend
+### Backend
 - Ruby on Rails
 - Google Drive (https://github.com/gimite/google-drive-ruby)
 - Google API (https://github.com/googleapis/google-api-ruby-client)
 - Fast JSON API (https://github.com/Netflix/fast_jsonapi)
 - Postgres (https://github.com/ged/ruby-pg)
 
-##Deployment Instructions
+## Deployment Instructions
 
 1. Clone the repository
 2. Make a copy of this Google Sheet: [Exercise List](https://docs.google.com/spreadsheets/d/1ooL1Wd7cubZuiZHBezBbmfXrJyHf6_eVtV4OysiHX7E/edit?usp=sharing)
